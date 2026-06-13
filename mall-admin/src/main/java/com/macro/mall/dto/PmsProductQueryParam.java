@@ -2,13 +2,11 @@ package com.macro.mall.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 商品查询参数（简化版）
  */
 @Data
-@EqualsAndHashCode
 public class PmsProductQueryParam {
     @Schema(title = "上架状态")
     private Integer publishStatus;
