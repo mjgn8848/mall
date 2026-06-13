@@ -18,7 +18,6 @@ import java.util.List;
 
 /**
  * 商品管理Controller
- * Created by macro on 2018/4/26.
  */
 @Controller
 @Tag(name = "PmsProductController", description = "商品管理")
@@ -75,20 +74,6 @@ public class PmsProductController {
     public CommonResult<List<PmsProduct>> getList(String keyword) {
         List<PmsProduct> productList = productService.list(keyword);
         return CommonResult.success(productList);
-    }
-
-    @Operation(summary = "批量修改审核状态")
-    @RequestMapping(value = "/update/verifyStatus", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult updateVerifyStatus(@RequestParam("ids") List<Long> ids,
-                                           @RequestParam("verifyStatus") Integer verifyStatus,
-                                           @RequestParam("detail") String detail) {
-        int count = productService.updateVerifyStatus(ids, verifyStatus, detail);
-        if (count > 0) {
-            return CommonResult.success(count);
-        } else {
-            return CommonResult.failed();
-        }
     }
 
     @Operation(summary = "批量上下架商品")

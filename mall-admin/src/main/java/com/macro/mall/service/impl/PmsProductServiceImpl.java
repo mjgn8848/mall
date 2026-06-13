@@ -136,32 +136,17 @@ public class PmsProductServiceImpl implements PmsProductService {
         if (productQueryParam.getPublishStatus() != null) {
             wrapper.eq("publish_status", productQueryParam.getPublishStatus());
         }
-        if (productQueryParam.getVerifyStatus() != null) {
-            wrapper.eq("verify_status", productQueryParam.getVerifyStatus());
-        }
         if (!StrUtil.isEmpty(productQueryParam.getKeyword())) {
             wrapper.like("name", productQueryParam.getKeyword());
         }
         if (!StrUtil.isEmpty(productQueryParam.getProductSn())) {
             wrapper.like("product_sn", productQueryParam.getProductSn());
         }
-        if (productQueryParam.getBrandId() != null) {
-            wrapper.eq("brand_id", productQueryParam.getBrandId());
-        }
         if (productQueryParam.getProductCategoryId() != null) {
             wrapper.eq("product_category_id", productQueryParam.getProductCategoryId());
         }
         wrapper.orderByDesc("id");
         return productMapper.selectPage(page, wrapper);
-    }
-
-    @Override
-    public int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail) {
-        PmsProduct product = new PmsProduct();
-        product.setVerifyStatus(verifyStatus);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andIdIn(ids);
-        return productMapper.updateByExampleSelective(product, example);
     }
 
     @Override

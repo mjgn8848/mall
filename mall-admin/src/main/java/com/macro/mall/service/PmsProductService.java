@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 商品管理Service
- * Created by macro on 2018/4/26.
+ * 商品管理Service（简化版）
  */
 public interface PmsProductService {
     /**
@@ -37,15 +36,6 @@ public interface PmsProductService {
      * 分页查询商品
      */
     IPage<PmsProduct> list(PmsProductQueryParam productQueryParam, Integer pageSize, Integer pageNum);
-
-    /**
-     * 批量修改审核状态
-     * @param ids 商品ID列表
-     * @param verifyStatus 审核状态
-     * @param detail 审核详情
-     */
-    @Transactional
-    int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail);
 
     /**
      * 批量修改商品上架状态
