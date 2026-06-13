@@ -1,15 +1,21 @@
 package com.macro.mall.config;
 
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * MyBatis相关配置
- * Created by macro on 2019/4/8.
+ * MyBatis-Plus 相关配置
  */
 @Configuration
 @EnableTransactionManagement
 @MapperScan({"com.macro.mall.mapper","com.macro.mall.dao"})
 public class MyBatisConfig {
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        return new MybatisPlusInterceptor();
+    }
 }

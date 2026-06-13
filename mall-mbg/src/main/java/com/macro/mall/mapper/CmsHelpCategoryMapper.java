@@ -1,11 +1,13 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsHelpCategory;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsHelpCategoryExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface CmsHelpCategoryMapper {
+public interface CmsHelpCategoryMapper extends BaseMapper<CmsHelpCategory> {
     long countByExample(CmsHelpCategoryExample example);
 
     int deleteByExample(CmsHelpCategoryExample example);

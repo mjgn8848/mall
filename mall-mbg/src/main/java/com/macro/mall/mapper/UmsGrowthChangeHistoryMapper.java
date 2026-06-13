@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsGrowthChangeHistory;
 import com.macro.mall.model.UmsGrowthChangeHistoryExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsGrowthChangeHistoryMapper {
+public interface UmsGrowthChangeHistoryMapper extends BaseMapper<UmsGrowthChangeHistory> {
     long countByExample(UmsGrowthChangeHistoryExample example);
 
     int deleteByExample(UmsGrowthChangeHistoryExample example);

@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.SmsCouponHistory;
 import com.macro.mall.model.SmsCouponHistoryExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface SmsCouponHistoryMapper {
+public interface SmsCouponHistoryMapper extends BaseMapper<SmsCouponHistory> {
     long countByExample(SmsCouponHistoryExample example);
 
     int deleteByExample(SmsCouponHistoryExample example);

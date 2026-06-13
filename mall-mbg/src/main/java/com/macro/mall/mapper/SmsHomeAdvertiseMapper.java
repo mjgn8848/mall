@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.SmsHomeAdvertise;
 import com.macro.mall.model.SmsHomeAdvertiseExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface SmsHomeAdvertiseMapper {
+public interface SmsHomeAdvertiseMapper extends BaseMapper<SmsHomeAdvertise> {
     long countByExample(SmsHomeAdvertiseExample example);
 
     int deleteByExample(SmsHomeAdvertiseExample example);

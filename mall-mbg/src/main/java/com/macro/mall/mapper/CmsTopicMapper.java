@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsTopic;
 import com.macro.mall.model.CmsTopicExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface CmsTopicMapper {
+public interface CmsTopicMapper extends BaseMapper<CmsTopic> {
     long countByExample(CmsTopicExample example);
 
     int deleteByExample(CmsTopicExample example);

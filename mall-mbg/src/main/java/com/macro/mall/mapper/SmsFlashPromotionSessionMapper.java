@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.SmsFlashPromotionSession;
 import com.macro.mall.model.SmsFlashPromotionSessionExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface SmsFlashPromotionSessionMapper {
+public interface SmsFlashPromotionSessionMapper extends BaseMapper<SmsFlashPromotionSession> {
     long countByExample(SmsFlashPromotionSessionExample example);
 
     int deleteByExample(SmsFlashPromotionSessionExample example);

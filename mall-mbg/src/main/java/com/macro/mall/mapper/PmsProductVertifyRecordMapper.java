@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.PmsProductVertifyRecord;
 import com.macro.mall.model.PmsProductVertifyRecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface PmsProductVertifyRecordMapper {
+public interface PmsProductVertifyRecordMapper extends BaseMapper<PmsProductVertifyRecord> {
     long countByExample(PmsProductVertifyRecordExample example);
 
     int deleteByExample(PmsProductVertifyRecordExample example);

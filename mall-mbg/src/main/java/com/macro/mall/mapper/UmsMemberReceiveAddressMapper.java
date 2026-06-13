@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsMemberReceiveAddress;
 import com.macro.mall.model.UmsMemberReceiveAddressExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsMemberReceiveAddressMapper {
+public interface UmsMemberReceiveAddressMapper extends BaseMapper<UmsMemberReceiveAddress> {
     long countByExample(UmsMemberReceiveAddressExample example);
 
     int deleteByExample(UmsMemberReceiveAddressExample example);

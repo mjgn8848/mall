@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.OmsOrderSetting;
 import com.macro.mall.model.OmsOrderSettingExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface OmsOrderSettingMapper {
+public interface OmsOrderSettingMapper extends BaseMapper<OmsOrderSetting> {
     long countByExample(OmsOrderSettingExample example);
 
     int deleteByExample(OmsOrderSettingExample example);

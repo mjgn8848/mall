@@ -26,6 +26,11 @@
             <groupId>com.macro.mall</groupId>
             <artifactId>mall-security</artifactId>
         </dependency>
+        <!--PageHelper 分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+        </dependency>
         <!--redis依赖配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

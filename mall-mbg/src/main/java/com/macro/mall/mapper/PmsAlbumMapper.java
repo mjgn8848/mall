@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.PmsAlbum;
 import com.macro.mall.model.PmsAlbumExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface PmsAlbumMapper {
+public interface PmsAlbumMapper extends BaseMapper<PmsAlbum> {
     long countByExample(PmsAlbumExample example);
 
     int deleteByExample(PmsAlbumExample example);

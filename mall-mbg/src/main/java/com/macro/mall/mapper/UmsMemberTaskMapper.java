@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsMemberTask;
 import com.macro.mall.model.UmsMemberTaskExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsMemberTaskMapper {
+public interface UmsMemberTaskMapper extends BaseMapper<UmsMemberTask> {
     long countByExample(UmsMemberTaskExample example);
 
     int deleteByExample(UmsMemberTaskExample example);

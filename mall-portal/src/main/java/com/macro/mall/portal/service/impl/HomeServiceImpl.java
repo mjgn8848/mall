@@ -60,6 +60,12 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
+    public List<CmsSubject> getSubjectList(Long cateId, Integer pageSize, Integer pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        return homeDao.getRecommendSubjectList(0, pageSize);
+    }
+
+    @Override
     public List<PmsProduct> hotProductList(Integer pageNum, Integer pageSize) {
         int offset = pageSize * (pageNum - 1);
         return homeDao.getHotProductList(offset, pageSize);

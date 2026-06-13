@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsPermission;
 import com.macro.mall.model.UmsPermissionExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsPermissionMapper {
+public interface UmsPermissionMapper extends BaseMapper<UmsPermission> {
     long countByExample(UmsPermissionExample example);
 
     int deleteByExample(UmsPermissionExample example);

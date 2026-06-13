@@ -1,11 +1,13 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsPrefrenceArea;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsPrefrenceAreaExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface CmsPrefrenceAreaMapper {
+public interface CmsPrefrenceAreaMapper extends BaseMapper<CmsPrefrenceArea> {
     long countByExample(CmsPrefrenceAreaExample example);
 
     int deleteByExample(CmsPrefrenceAreaExample example);

@@ -1,11 +1,13 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsTopicComment;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.CmsTopicCommentExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface CmsTopicCommentMapper {
+public interface CmsTopicCommentMapper extends BaseMapper<CmsTopicComment> {
     long countByExample(CmsTopicCommentExample example);
 
     int deleteByExample(CmsTopicCommentExample example);

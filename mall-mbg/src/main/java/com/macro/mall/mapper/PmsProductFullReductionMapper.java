@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.PmsProductFullReduction;
 import com.macro.mall.model.PmsProductFullReductionExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface PmsProductFullReductionMapper {
+public interface PmsProductFullReductionMapper extends BaseMapper<PmsProductFullReduction> {
     long countByExample(PmsProductFullReductionExample example);
 
     int deleteByExample(PmsProductFullReductionExample example);

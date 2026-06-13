@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsRoleResourceRelation;
 import com.macro.mall.model.UmsRoleResourceRelationExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsRoleResourceRelationMapper {
+public interface UmsRoleResourceRelationMapper extends BaseMapper<UmsRoleResourceRelation> {
     long countByExample(UmsRoleResourceRelationExample example);
 
     int deleteByExample(UmsRoleResourceRelationExample example);

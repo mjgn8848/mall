@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsIntegrationConsumeSetting;
 import com.macro.mall.model.UmsIntegrationConsumeSettingExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsIntegrationConsumeSettingMapper {
+public interface UmsIntegrationConsumeSettingMapper extends BaseMapper<UmsIntegrationConsumeSetting> {
     long countByExample(UmsIntegrationConsumeSettingExample example);
 
     int deleteByExample(UmsIntegrationConsumeSettingExample example);

@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.SmsHomeRecommendProduct;
 import com.macro.mall.model.SmsHomeRecommendProductExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface SmsHomeRecommendProductMapper {
+public interface SmsHomeRecommendProductMapper extends BaseMapper<SmsHomeRecommendProduct> {
     long countByExample(SmsHomeRecommendProductExample example);
 
     int deleteByExample(SmsHomeRecommendProductExample example);

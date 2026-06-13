@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsAdminLoginLog;
 import com.macro.mall.model.UmsAdminLoginLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsAdminLoginLogMapper {
+public interface UmsAdminLoginLogMapper extends BaseMapper<UmsAdminLoginLog> {
     long countByExample(UmsAdminLoginLogExample example);
 
     int deleteByExample(UmsAdminLoginLogExample example);

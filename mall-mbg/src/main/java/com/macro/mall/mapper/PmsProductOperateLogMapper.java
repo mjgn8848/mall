@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.PmsProductOperateLog;
 import com.macro.mall.model.PmsProductOperateLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface PmsProductOperateLogMapper {
+public interface PmsProductOperateLogMapper extends BaseMapper<PmsProductOperateLog> {
     long countByExample(PmsProductOperateLogExample example);
 
     int deleteByExample(PmsProductOperateLogExample example);

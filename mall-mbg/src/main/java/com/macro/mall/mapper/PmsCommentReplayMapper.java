@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.PmsCommentReplay;
 import com.macro.mall.model.PmsCommentReplayExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface PmsCommentReplayMapper {
+public interface PmsCommentReplayMapper extends BaseMapper<PmsCommentReplay> {
     long countByExample(PmsCommentReplayExample example);
 
     int deleteByExample(PmsCommentReplayExample example);

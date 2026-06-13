@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsResource;
 import com.macro.mall.model.UmsResourceExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsResourceMapper {
+public interface UmsResourceMapper extends BaseMapper<UmsResource> {
     long countByExample(UmsResourceExample example);
 
     int deleteByExample(UmsResourceExample example);

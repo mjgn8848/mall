@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.SmsCouponProductRelation;
 import com.macro.mall.model.SmsCouponProductRelationExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface SmsCouponProductRelationMapper {
+public interface SmsCouponProductRelationMapper extends BaseMapper<SmsCouponProductRelation> {
     long countByExample(SmsCouponProductRelationExample example);
 
     int deleteByExample(SmsCouponProductRelationExample example);

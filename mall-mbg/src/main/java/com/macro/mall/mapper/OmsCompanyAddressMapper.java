@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.OmsCompanyAddress;
 import com.macro.mall.model.OmsCompanyAddressExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface OmsCompanyAddressMapper {
+public interface OmsCompanyAddressMapper extends BaseMapper<OmsCompanyAddress> {
     long countByExample(OmsCompanyAddressExample example);
 
     int deleteByExample(OmsCompanyAddressExample example);

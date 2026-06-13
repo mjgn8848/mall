@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsMemberStatisticsInfo;
 import com.macro.mall.model.UmsMemberStatisticsInfoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsMemberStatisticsInfoMapper {
+public interface UmsMemberStatisticsInfoMapper extends BaseMapper<UmsMemberStatisticsInfo> {
     long countByExample(UmsMemberStatisticsInfoExample example);
 
     int deleteByExample(UmsMemberStatisticsInfoExample example);

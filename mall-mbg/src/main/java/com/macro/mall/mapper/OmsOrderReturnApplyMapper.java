@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.OmsOrderReturnApply;
 import com.macro.mall.model.OmsOrderReturnApplyExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface OmsOrderReturnApplyMapper {
+public interface OmsOrderReturnApplyMapper extends BaseMapper<OmsOrderReturnApply> {
     long countByExample(OmsOrderReturnApplyExample example);
 
     int deleteByExample(OmsOrderReturnApplyExample example);

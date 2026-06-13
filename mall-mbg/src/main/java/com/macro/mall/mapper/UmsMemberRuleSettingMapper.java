@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.UmsMemberRuleSetting;
 import com.macro.mall.model.UmsMemberRuleSettingExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface UmsMemberRuleSettingMapper {
+public interface UmsMemberRuleSettingMapper extends BaseMapper<UmsMemberRuleSetting> {
     long countByExample(UmsMemberRuleSettingExample example);
 
     int deleteByExample(UmsMemberRuleSettingExample example);

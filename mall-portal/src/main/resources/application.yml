@@ -7,10 +7,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-mybatis:
+mybatis-plus:
   mapper-locations:
     - classpath:dao/*.xml
     - classpath*:com/**/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

@@ -1,11 +1,12 @@
 package com.macro.mall.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.model.PmsProductCategory;
 import com.macro.mall.model.PmsProductCategoryExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface PmsProductCategoryMapper {
+public interface PmsProductCategoryMapper extends BaseMapper<PmsProductCategory> {
     long countByExample(PmsProductCategoryExample example);
 
     int deleteByExample(PmsProductCategoryExample example);
