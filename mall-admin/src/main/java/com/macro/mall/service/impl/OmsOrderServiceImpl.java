@@ -1,6 +1,9 @@
 package com.macro.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dao.OmsOrderDao;
 import com.macro.mall.dao.OmsOrderOperateHistoryDao;
 import com.macro.mall.dto.*;
@@ -33,9 +36,29 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     private OmsOrderOperateHistoryMapper orderOperateHistoryMapper;
 
     @Override
-    public List<OmsOrder> list(OmsOrderQueryParam queryParam, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        return orderDao.getList(queryParam);
+    public IPage<OmsOrder> list(OmsOrderQueryParam queryParam, Integer pageSize, Integer pageNum) {
+        Page<OmsOrder> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<OmsOrder> wrapper = new QueryWrapper<>();
+        if (!StrUtil.isEmpty(queryParam.getOrderSn())) {
+            wrapper.like("order_sn", queryParam.getOrderSn());
+        }
+        if (queryParam.getStatus() != null) {
+            wrapper.eq("status", queryParam.getStatus());
+        }
+        if (queryParam.getSourceType() != null) {
+            wrapper.eq("source_type", queryParam.getSourceType());
+        }
+        if (queryParam.getOrderType() != null) {
+            wrapper.eq("order_type", queryParam.getOrderType());
+        }
+        if (!StrUtil.isEmpty(queryParam.getReceiverKeyword())) {
+            String keyword = queryParam.getReceiverKeyword();
+            wrapper.and(w -> w.like("receiver_name", keyword).or().like("receiver_phone", keyword));
+        }
+        if (!StrUtil.isEmpty(queryParam.getCreateTime())) {
+            wrapper.ge("create_time", queryParam.getCreateTime());
+        }
+        return orderMapper.selectPage(page, wrapper);
     }
 
     @Override

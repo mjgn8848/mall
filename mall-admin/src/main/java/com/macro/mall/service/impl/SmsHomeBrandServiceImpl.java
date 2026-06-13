@@ -1,7 +1,9 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.mapper.SmsHomeBrandMapper;
 import com.macro.mall.model.SmsHomeBrand;
 import com.macro.mall.model.SmsHomeBrandExample;
@@ -54,17 +56,16 @@ public class SmsHomeBrandServiceImpl implements SmsHomeBrandService {
     }
 
     @Override
-    public List<SmsHomeBrand> list(String brandName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        SmsHomeBrandExample example = new SmsHomeBrandExample();
-        SmsHomeBrandExample.Criteria criteria = example.createCriteria();
-        if(!StrUtil.isEmpty(brandName)){
-            criteria.andBrandNameLike("%"+brandName+"%");
+    public IPage<SmsHomeBrand> list(String brandName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
+        Page<SmsHomeBrand> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<SmsHomeBrand> wrapper = new QueryWrapper<>();
+        if (!StrUtil.isEmpty(brandName)) {
+            wrapper.like("brand_name", brandName);
         }
-        if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+        if (recommendStatus != null) {
+            wrapper.eq("recommend_status", recommendStatus);
         }
-        example.setOrderByClause("sort desc");
-        return homeBrandMapper.selectByExample(example);
+        wrapper.orderByDesc("sort");
+        return homeBrandMapper.selectPage(page, wrapper);
     }
 }

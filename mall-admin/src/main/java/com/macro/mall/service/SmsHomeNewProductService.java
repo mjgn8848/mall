@@ -1,5 +1,6 @@
 package com.macro.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macro.mall.model.SmsHomeNewProduct;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +35,5 @@ public interface SmsHomeNewProductService {
     /**
      * 分页查询推荐
      */
-    List<SmsHomeNewProduct> list(String productName, Integer recommendStatus, Integer pageSize, Integer pageNum);
+    IPage<SmsHomeNewProduct> list(String productName, Integer recommendStatus, Integer pageSize, Integer pageNum);
 }

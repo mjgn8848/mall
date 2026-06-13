@@ -1,5 +1,6 @@
 package com.macro.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macro.mall.dto.PmsBrandParam;
 import com.macro.mall.model.PmsBrand;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ public interface PmsBrandService {
     /**
      * 分页查询品牌
      */
-    List<PmsBrand> listBrand(String keyword, Integer showStatus, int pageNum, int pageSize);
+    IPage<PmsBrand> listBrand(String keyword, Integer showStatus, int pageNum, int pageSize);
 
     /**
      * 获取品牌详情

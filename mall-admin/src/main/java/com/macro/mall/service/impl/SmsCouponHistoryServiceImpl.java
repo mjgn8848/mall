@@ -1,15 +1,14 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.mapper.SmsCouponHistoryMapper;
 import com.macro.mall.model.SmsCouponHistory;
-import com.macro.mall.model.SmsCouponHistoryExample;
 import com.macro.mall.service.SmsCouponHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 优惠券领取记录管理Service实现类
@@ -20,19 +19,18 @@ public class SmsCouponHistoryServiceImpl implements SmsCouponHistoryService {
     @Autowired
     private SmsCouponHistoryMapper historyMapper;
     @Override
-    public List<SmsCouponHistory> list(Long couponId, Integer useStatus, String orderSn, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        SmsCouponHistoryExample example = new SmsCouponHistoryExample();
-        SmsCouponHistoryExample.Criteria criteria = example.createCriteria();
-        if(couponId!=null){
-            criteria.andCouponIdEqualTo(couponId);
+    public IPage<SmsCouponHistory> list(Long couponId, Integer useStatus, String orderSn, Integer pageSize, Integer pageNum) {
+        Page<SmsCouponHistory> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<SmsCouponHistory> wrapper = new QueryWrapper<>();
+        if (couponId != null) {
+            wrapper.eq("coupon_id", couponId);
         }
-        if(useStatus!=null){
-            criteria.andUseStatusEqualTo(useStatus);
+        if (useStatus != null) {
+            wrapper.eq("use_status", useStatus);
         }
-        if(!StrUtil.isEmpty(orderSn)){
-            criteria.andOrderSnEqualTo(orderSn);
+        if (!StrUtil.isEmpty(orderSn)) {
+            wrapper.like("order_sn", orderSn);
         }
-        return historyMapper.selectByExample(example);
+        return historyMapper.selectPage(page, wrapper);
     }
 }

@@ -1,7 +1,9 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.mapper.SmsHomeRecommendProductMapper;
 import com.macro.mall.model.SmsHomeRecommendProduct;
 import com.macro.mall.model.SmsHomeRecommendProductExample;
@@ -54,17 +56,16 @@ public class SmsHomeRecommendProductServiceImpl implements SmsHomeRecommendProdu
     }
 
     @Override
-    public List<SmsHomeRecommendProduct> list(String productName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        SmsHomeRecommendProductExample example = new SmsHomeRecommendProductExample();
-        SmsHomeRecommendProductExample.Criteria criteria = example.createCriteria();
-        if(!StrUtil.isEmpty(productName)){
-            criteria.andProductNameLike("%"+productName+"%");
+    public IPage<SmsHomeRecommendProduct> list(String productName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
+        Page<SmsHomeRecommendProduct> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<SmsHomeRecommendProduct> wrapper = new QueryWrapper<>();
+        if (!StrUtil.isEmpty(productName)) {
+            wrapper.like("product_name", productName);
         }
-        if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+        if (recommendStatus != null) {
+            wrapper.eq("recommend_status", recommendStatus);
         }
-        example.setOrderByClause("sort desc");
-        return recommendProductMapper.selectByExample(example);
+        wrapper.orderByDesc("sort");
+        return recommendProductMapper.selectPage(page, wrapper);
     }
 }

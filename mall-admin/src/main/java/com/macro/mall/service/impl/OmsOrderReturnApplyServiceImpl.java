@@ -1,6 +1,9 @@
 package com.macro.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dao.OmsOrderReturnApplyDao;
 import com.macro.mall.dto.OmsOrderReturnApplyResult;
 import com.macro.mall.dto.OmsReturnApplyQueryParam;
@@ -26,9 +29,26 @@ public class OmsOrderReturnApplyServiceImpl implements OmsOrderReturnApplyServic
     @Autowired
     private OmsOrderReturnApplyMapper returnApplyMapper;
     @Override
-    public List<OmsOrderReturnApply> list(OmsReturnApplyQueryParam queryParam, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        return returnApplyDao.getList(queryParam);
+    public IPage<OmsOrderReturnApply> list(OmsReturnApplyQueryParam queryParam, Integer pageSize, Integer pageNum) {
+        Page<OmsOrderReturnApply> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<OmsOrderReturnApply> wrapper = new QueryWrapper<>();
+        if (queryParam.getStatus() != null) {
+            wrapper.eq("status", queryParam.getStatus());
+        }
+        if (!StrUtil.isEmpty(queryParam.getCreateTime())) {
+            wrapper.ge("create_time", queryParam.getCreateTime());
+        }
+        if (!StrUtil.isEmpty(queryParam.getHandleTime())) {
+            wrapper.le("create_time", queryParam.getHandleTime());
+        }
+        if (!StrUtil.isEmpty(queryParam.getReceiverKeyword())) {
+            String keyword = queryParam.getReceiverKeyword();
+            wrapper.and(w -> w.like("return_name", keyword).or().like("return_phone", keyword).or().like("member_username", keyword));
+        }
+        if (queryParam.getId() != null) {
+            wrapper.eq("order_sn", queryParam.getId());
+        }
+        return returnApplyMapper.selectPage(page, wrapper);
     }
 
     @Override

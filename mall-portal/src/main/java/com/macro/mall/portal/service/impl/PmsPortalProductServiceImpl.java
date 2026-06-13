@@ -2,7 +2,9 @@ package com.macro.mall.portal.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
 import com.macro.mall.portal.dao.PortalProductDao;
@@ -42,32 +44,30 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
     private PortalProductDao portalProductDao;
 
     @Override
-    public List<PmsProduct> search(String keyword, Long brandId, Long productCategoryId, Integer pageNum, Integer pageSize, Integer sort) {
-        PageHelper.startPage(pageNum, pageSize);
-        PmsProductExample example = new PmsProductExample();
-        PmsProductExample.Criteria criteria = example.createCriteria();
-        criteria.andDeleteStatusEqualTo(0);
-        criteria.andPublishStatusEqualTo(1);
+    public IPage<PmsProduct> search(String keyword, Long brandId, Long productCategoryId, Integer pageNum, Integer pageSize, Integer sort) {
+        Page<PmsProduct> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
+        wrapper.eq("delete_status", 0).eq("publish_status", 1);
         if (StrUtil.isNotEmpty(keyword)) {
-            criteria.andNameLike("%" + keyword + "%");
+            wrapper.like("name", keyword);
         }
         if (brandId != null) {
-            criteria.andBrandIdEqualTo(brandId);
+            wrapper.eq("brand_id", brandId);
         }
         if (productCategoryId != null) {
-            criteria.andProductCategoryIdEqualTo(productCategoryId);
+            wrapper.eq("product_category_id", productCategoryId);
         }
         //1->按新品；2->按销量；3->价格从低到高；4->价格从高到低
         if (sort == 1) {
-            example.setOrderByClause("id desc");
+            wrapper.orderByDesc("id");
         } else if (sort == 2) {
-            example.setOrderByClause("sale desc");
+            wrapper.orderByDesc("sale");
         } else if (sort == 3) {
-            example.setOrderByClause("price asc");
+            wrapper.orderByAsc("price");
         } else if (sort == 4) {
-            example.setOrderByClause("price desc");
+            wrapper.orderByDesc("price");
         }
-        return productMapper.selectByExample(example);
+        return productMapper.selectPage(page, wrapper);
     }
 
     @Override

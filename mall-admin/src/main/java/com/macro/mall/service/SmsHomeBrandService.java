@@ -1,5 +1,6 @@
 package com.macro.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macro.mall.model.SmsHomeBrand;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +35,5 @@ public interface SmsHomeBrandService {
     /**
      * 分页查询品牌推荐
      */
-    List<SmsHomeBrand> list(String brandName, Integer recommendStatus, Integer pageSize, Integer pageNum);
+    IPage<SmsHomeBrand> list(String brandName, Integer recommendStatus, Integer pageSize, Integer pageNum);
 }

@@ -1,8 +1,7 @@
 package com.macro.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macro.mall.model.SmsCouponHistory;
-
-import java.util.List;
 
 /**
  * 优惠券领取记录管理Service
@@ -15,5 +14,5 @@ public interface SmsCouponHistoryService {
      * @param useStatus 使用状态
      * @param orderSn 使用订单号码
      */
-    List<SmsCouponHistory> list(Long couponId, Integer useStatus, String orderSn, Integer pageSize, Integer pageNum);
+    IPage<SmsCouponHistory> list(Long couponId, Integer useStatus, String orderSn, Integer pageSize, Integer pageNum);
 }

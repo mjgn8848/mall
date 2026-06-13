@@ -1,6 +1,6 @@
 package com.macro.mall.portal.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
 import com.macro.mall.portal.dao.HomeDao;
@@ -41,12 +41,11 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public List<PmsProduct> recommendProductList(Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria()
-                .andDeleteStatusEqualTo(0)
-                .andPublishStatusEqualTo(1);
-        return productMapper.selectByExample(example);
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<PmsProduct> page =
+                new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNum, pageSize);
+        QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
+        wrapper.eq("delete_status", 0).eq("publish_status", 1);
+        return productMapper.selectPage(page, wrapper).getRecords();
     }
 
     @Override
@@ -61,8 +60,8 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public List<CmsSubject> getSubjectList(Long cateId, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        return homeDao.getRecommendSubjectList(0, pageSize);
+        int offset = pageSize * (pageNum - 1);
+        return homeDao.getRecommendSubjectList(offset, pageSize);
     }
 
     @Override

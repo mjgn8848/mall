@@ -1,12 +1,13 @@
 package com.macro.mall.portal.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.mapper.PmsBrandMapper;
 import com.macro.mall.mapper.PmsProductMapper;
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.model.PmsProduct;
-import com.macro.mall.model.PmsProductExample;
 import com.macro.mall.portal.dao.HomeDao;
 import com.macro.mall.portal.service.PmsPortalBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import java.util.List;
 
 /**
  * 前台品牌管理Service实现类
- * Created by macro on 2020/5/15.
  */
 @Service
 public class PmsPortalBrandServiceImpl implements PmsPortalBrandService {
@@ -40,12 +40,10 @@ public class PmsPortalBrandServiceImpl implements PmsPortalBrandService {
 
     @Override
     public CommonPage<PmsProduct> productList(Long brandId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        PmsProductExample example = new PmsProductExample();
-        example.createCriteria().andDeleteStatusEqualTo(0)
-                .andPublishStatusEqualTo(1)
-                .andBrandIdEqualTo(brandId);
-        List<PmsProduct> productList = productMapper.selectByExample(example);
-        return CommonPage.restPage(productList);
+        Page<PmsProduct> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
+        wrapper.eq("delete_status", 0).eq("publish_status", 1).eq("brand_id", brandId);
+        IPage<PmsProduct> productPage = productMapper.selectPage(page, wrapper);
+        return CommonPage.restPage(productPage);
     }
 }

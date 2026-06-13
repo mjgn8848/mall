@@ -1,5 +1,6 @@
 package com.macro.mall.common.api;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.domain.Page;
 
@@ -7,33 +8,14 @@ import java.util.List;
 
 /**
  * 通用分页数据封装类
- * Created by macro on 2019/4/19.
  */
 public class CommonPage<T> {
-    /**
-     * 当前页码
-     */
     private Integer pageNum;
-    /**
-     * 每页数量
-     */
     private Integer pageSize;
-    /**
-     * 总页数
-     */
     private Integer totalPage;
-    /**
-     * 总条数
-     */
     private Long total;
-    /**
-     * 分页数据
-     */
     private List<T> list;
 
-    /**
-     * 将PageHelper分页后的list转为分页信息
-     */
     public static <T> CommonPage<T> restPage(List<T> list) {
         CommonPage<T> result = new CommonPage<T>();
         PageInfo<T> pageInfo = new PageInfo<T>(list);
@@ -45,9 +27,6 @@ public class CommonPage<T> {
         return result;
     }
 
-    /**
-     * 将SpringData分页后的list转为分页信息
-     */
     public static <T> CommonPage<T> restPage(Page<T> pageInfo) {
         CommonPage<T> result = new CommonPage<T>();
         result.setTotalPage(pageInfo.getTotalPages());
@@ -55,6 +34,16 @@ public class CommonPage<T> {
         result.setPageSize(pageInfo.getSize());
         result.setTotal(pageInfo.getTotalElements());
         result.setList(pageInfo.getContent());
+        return result;
+    }
+
+    public static <T> CommonPage<T> restPage(IPage<T> page) {
+        CommonPage<T> result = new CommonPage<T>();
+        result.setTotalPage((int) page.getPages());
+        result.setPageNum((int) page.getCurrent());
+        result.setPageSize((int) page.getSize());
+        result.setTotal(page.getTotal());
+        result.setList(page.getRecords());
         return result;
     }
 

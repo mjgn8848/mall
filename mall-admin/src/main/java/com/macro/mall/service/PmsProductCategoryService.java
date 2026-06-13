@@ -1,5 +1,6 @@
 package com.macro.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.macro.mall.dto.PmsProductCategoryParam;
 import com.macro.mall.dto.PmsProductCategoryWithChildrenItem;
 import com.macro.mall.model.PmsProductCategory;
@@ -27,7 +28,7 @@ public interface PmsProductCategoryService {
     /**
      * 分页获取商品分类
      */
-    List<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum);
+    IPage<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum);
 
     /**
      * 删除商品分类

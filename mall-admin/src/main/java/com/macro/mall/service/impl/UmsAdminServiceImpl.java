@@ -1,7 +1,9 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.bo.AdminUserDetails;
 import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.common.util.RequestUtil;
@@ -124,15 +126,16 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public List<UmsAdmin> list(String keyword, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        UmsAdminExample example = new UmsAdminExample();
-        UmsAdminExample.Criteria criteria = example.createCriteria();
+    public IPage<UmsAdmin> list(String keyword, Integer pageSize, Integer pageNum) {
+        Page<UmsAdmin> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
         if (!StrUtil.isEmpty(keyword)) {
-            criteria.andUsernameLike("%" + keyword + "%");
-            example.or(example.createCriteria().andNickNameLike("%" + keyword + "%"));
+            wrapper.like("username", keyword)
+                    .or()
+                    .like("nick_name", keyword);
         }
-        return adminMapper.selectByExample(example);
+        wrapper.orderByDesc("id");
+        return adminMapper.selectPage(page, wrapper);
     }
 
     @Override

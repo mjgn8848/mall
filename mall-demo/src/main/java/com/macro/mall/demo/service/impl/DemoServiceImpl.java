@@ -1,11 +1,12 @@
 package com.macro.mall.demo.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.demo.dto.PmsBrandDto;
 import com.macro.mall.demo.service.DemoService;
 import com.macro.mall.mapper.PmsBrandMapper;
 import com.macro.mall.model.PmsBrand;
-import com.macro.mall.model.PmsBrandExample;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,9 +48,9 @@ public class DemoServiceImpl implements DemoService {
     }
 
     @Override
-    public List<PmsBrand> listBrand(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        return brandMapper.selectByExample(new PmsBrandExample());
+    public IPage<PmsBrand> listBrand(int pageNum, int pageSize) {
+        Page<PmsBrand> page = new Page<>(pageNum, pageSize);
+        return brandMapper.selectPage(page, new QueryWrapper<>());
     }
 
     @Override

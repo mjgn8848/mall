@@ -2,7 +2,9 @@ package com.macro.mall.portal.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.common.service.RedisService;
@@ -248,21 +250,20 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
             status = null;
         }
         UmsMember member = memberService.getCurrentMember();
-        PageHelper.startPage(pageNum, pageSize);
-        OmsOrderExample orderExample = new OmsOrderExample();
-        OmsOrderExample.Criteria criteria = orderExample.createCriteria();
-        criteria.andDeleteStatusEqualTo(0).andMemberIdEqualTo(member.getId());
+        Page<OmsOrder> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<OmsOrder> wrapper = new QueryWrapper<>();
+        wrapper.eq("delete_status", 0).eq("member_id", member.getId());
         if (status != null) {
-            criteria.andStatusEqualTo(status);
+            wrapper.eq("status", status);
         }
-        orderExample.setOrderByClause("create_time desc");
-        List<OmsOrder> orderList = orderMapper.selectByExample(orderExample);
-        CommonPage<OmsOrder> orderPage = CommonPage.restPage(orderList);
+        wrapper.orderByDesc("create_time");
+        IPage<OmsOrder> orderPage = orderMapper.selectPage(page, wrapper);
         CommonPage<OmsOrderDetail> resultPage = new CommonPage<>();
-        resultPage.setPageNum(orderPage.getPageNum());
-        resultPage.setPageSize(orderPage.getPageSize());
+        resultPage.setPageNum((int) orderPage.getCurrent());
+        resultPage.setPageSize((int) orderPage.getSize());
         resultPage.setTotal(orderPage.getTotal());
-        resultPage.setTotalPage(orderPage.getTotalPage());
+        resultPage.setTotalPage((int) orderPage.getPages());
+        List<OmsOrder> orderList = orderPage.getRecords();
         if (CollUtil.isEmpty(orderList)) {
             return resultPage;
         }

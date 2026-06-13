@@ -1,7 +1,9 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.mapper.SmsHomeRecommendSubjectMapper;
 import com.macro.mall.model.SmsHomeRecommendSubject;
 import com.macro.mall.model.SmsHomeRecommendSubjectExample;
@@ -54,17 +56,16 @@ public class SmsHomeRecommendSubjectServiceImpl implements SmsHomeRecommendSubje
     }
 
     @Override
-    public List<SmsHomeRecommendSubject> list(String subjectName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        SmsHomeRecommendSubjectExample example = new SmsHomeRecommendSubjectExample();
-        SmsHomeRecommendSubjectExample.Criteria criteria = example.createCriteria();
-        if(!StrUtil.isEmpty(subjectName)){
-            criteria.andSubjectNameLike("%"+subjectName+"%");
+    public IPage<SmsHomeRecommendSubject> list(String subjectName, Integer recommendStatus, Integer pageSize, Integer pageNum) {
+        Page<SmsHomeRecommendSubject> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<SmsHomeRecommendSubject> wrapper = new QueryWrapper<>();
+        if (!StrUtil.isEmpty(subjectName)) {
+            wrapper.like("subject_name", subjectName);
         }
-        if(recommendStatus!=null){
-            criteria.andRecommendStatusEqualTo(recommendStatus);
+        if (recommendStatus != null) {
+            wrapper.eq("recommend_status", recommendStatus);
         }
-        example.setOrderByClause("sort desc");
-        return smsHomeRecommendSubjectMapper.selectByExample(example);
+        wrapper.orderByDesc("sort");
+        return smsHomeRecommendSubjectMapper.selectPage(page, wrapper);
     }
 }

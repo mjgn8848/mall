@@ -1,6 +1,8 @@
 package com.macro.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dao.PmsProductAttributeDao;
 import com.macro.mall.dto.PmsProductAttributeParam;
 import com.macro.mall.dto.ProductAttrInfo;
@@ -30,12 +32,11 @@ public class PmsProductAttributeServiceImpl implements PmsProductAttributeServic
     private PmsProductAttributeDao productAttributeDao;
 
     @Override
-    public List<PmsProductAttribute> getList(Long cid, Integer type, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        PmsProductAttributeExample example = new PmsProductAttributeExample();
-        example.setOrderByClause("sort desc");
-        example.createCriteria().andProductAttributeCategoryIdEqualTo(cid).andTypeEqualTo(type);
-        return productAttributeMapper.selectByExample(example);
+    public IPage<PmsProductAttribute> getList(Long cid, Integer type, Integer pageSize, Integer pageNum) {
+        Page<PmsProductAttribute> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<PmsProductAttribute> wrapper = new QueryWrapper<>();
+        wrapper.eq("product_attribute_category_id", cid).eq("type", type).orderByDesc("sort");
+        return productAttributeMapper.selectPage(page, wrapper);
     }
 
     @Override

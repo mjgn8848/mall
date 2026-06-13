@@ -1,6 +1,8 @@
 package com.macro.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dao.PmsProductCategoryAttributeRelationDao;
 import com.macro.mall.dao.PmsProductCategoryDao;
 import com.macro.mall.dto.PmsProductCategoryParam;
@@ -93,12 +95,11 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
     }
 
     @Override
-    public List<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        PmsProductCategoryExample example = new PmsProductCategoryExample();
-        example.setOrderByClause("sort desc");
-        example.createCriteria().andParentIdEqualTo(parentId);
-        return productCategoryMapper.selectByExample(example);
+    public IPage<PmsProductCategory> getList(Long parentId, Integer pageSize, Integer pageNum) {
+        Page<PmsProductCategory> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<PmsProductCategory> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_id", parentId).orderByDesc("sort");
+        return productCategoryMapper.selectPage(page, wrapper);
     }
 
     @Override

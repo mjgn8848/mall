@@ -1,7 +1,9 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dto.PmsBrandParam;
 import com.macro.mall.mapper.PmsBrandMapper;
 import com.macro.mall.mapper.PmsProductMapper;
@@ -74,18 +76,17 @@ public class PmsBrandServiceImpl implements PmsBrandService {
     }
 
     @Override
-    public List<PmsBrand> listBrand(String keyword, Integer showStatus, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        pmsBrandExample.setOrderByClause("sort desc");
-        PmsBrandExample.Criteria criteria = pmsBrandExample.createCriteria();
+    public IPage<PmsBrand> listBrand(String keyword, Integer showStatus, int pageNum, int pageSize) {
+        Page<PmsBrand> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<PmsBrand> wrapper = new QueryWrapper<>();
         if (!StrUtil.isEmpty(keyword)) {
-            criteria.andNameLike("%" + keyword + "%");
+            wrapper.like("name", keyword);
         }
-        if(showStatus!=null){
-            criteria.andShowStatusEqualTo(showStatus);
+        if (showStatus != null) {
+            wrapper.eq("show_status", showStatus);
         }
-        return brandMapper.selectByExample(pmsBrandExample);
+        wrapper.orderByDesc("sort");
+        return brandMapper.selectPage(page, wrapper);
     }
 
     @Override

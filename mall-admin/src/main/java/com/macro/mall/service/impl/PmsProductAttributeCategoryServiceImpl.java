@@ -1,11 +1,11 @@
 package com.macro.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dao.PmsProductAttributeCategoryDao;
 import com.macro.mall.dto.PmsProductAttributeCategoryItem;
 import com.macro.mall.mapper.PmsProductAttributeCategoryMapper;
 import com.macro.mall.model.PmsProductAttributeCategory;
-import com.macro.mall.model.PmsProductAttributeCategoryExample;
 import com.macro.mall.service.PmsProductAttributeCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * 商品属性分类管理Service实现类
- * Created by macro on 2018/4/26.
  */
 @Service
 public class PmsProductAttributeCategoryServiceImpl implements PmsProductAttributeCategoryService {
@@ -49,9 +48,9 @@ public class PmsProductAttributeCategoryServiceImpl implements PmsProductAttribu
     }
 
     @Override
-    public List<PmsProductAttributeCategory> getList(Integer pageSize, Integer pageNum) {
-        PageHelper.startPage(pageNum,pageSize);
-        return productAttributeCategoryMapper.selectByExample(new PmsProductAttributeCategoryExample());
+    public IPage<PmsProductAttributeCategory> getList(Integer pageSize, Integer pageNum) {
+        Page<PmsProductAttributeCategory> page = new Page<>(pageNum, pageSize);
+        return productAttributeCategoryMapper.selectPage(page, null);
     }
 
     @Override

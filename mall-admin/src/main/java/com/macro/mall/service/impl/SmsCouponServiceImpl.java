@@ -1,7 +1,9 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.dao.SmsCouponDao;
 import com.macro.mall.dao.SmsCouponProductCategoryRelationDao;
 import com.macro.mall.dao.SmsCouponProductRelationDao;
@@ -105,17 +107,19 @@ public class SmsCouponServiceImpl implements SmsCouponService {
     }
 
     @Override
-    public List<SmsCoupon> list(String name, Integer type, Integer pageSize, Integer pageNum) {
-        SmsCouponExample example = new SmsCouponExample();
-        SmsCouponExample.Criteria criteria = example.createCriteria();
-        if(!StrUtil.isEmpty(name)){
-            criteria.andNameLike("%"+name+"%");
+    public IPage<SmsCoupon> list(String name, Integer type, Integer platform, Integer pageSize, Integer pageNum) {
+        Page<SmsCoupon> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<SmsCoupon> wrapper = new QueryWrapper<>();
+        if (!StrUtil.isEmpty(name)) {
+            wrapper.like("name", name);
         }
-        if(type!=null){
-            criteria.andTypeEqualTo(type);
+        if (type != null) {
+            wrapper.eq("type", type);
         }
-        PageHelper.startPage(pageNum,pageSize);
-        return couponMapper.selectByExample(example);
+        if (platform != null) {
+            wrapper.eq("platform", platform);
+        }
+        return couponMapper.selectPage(page, wrapper);
     }
 
     @Override
