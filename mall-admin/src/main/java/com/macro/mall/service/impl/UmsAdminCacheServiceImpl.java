@@ -2,14 +2,11 @@ package com.macro.mall.service.impl;
 
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.model.UmsAdmin;
-import com.macro.mall.model.UmsResource;
 import com.macro.mall.service.UmsAdminCacheService;
 import com.macro.mall.service.UmsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 后台用户缓存管理Service实现类（简化版）
@@ -37,26 +34,6 @@ public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
     }
 
     @Override
-    public void delResourceList(Long adminId) {
-        // 简化版不再使用资源缓存
-    }
-
-    @Override
-    public void delResourceListByRole(Long roleId) {
-        // 简化版不再使用资源缓存
-    }
-
-    @Override
-    public void delResourceListByRoleIds(List<Long> roleIds) {
-        // 简化版不再使用资源缓存
-    }
-
-    @Override
-    public void delResourceListByResource(Long resourceId) {
-        // 简化版不再使用资源缓存
-    }
-
-    @Override
     public UmsAdmin getAdmin(String username) {
         String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + username;
         return (UmsAdmin) redisService.get(key);
@@ -66,16 +43,5 @@ public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
     public void setAdmin(UmsAdmin admin) {
         String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + admin.getUsername();
         redisService.set(key, admin, REDIS_EXPIRE);
-    }
-
-    @Override
-    public List<UmsResource> getResourceList(Long adminId) {
-        // 简化版不再使用资源缓存
-        return null;
-    }
-
-    @Override
-    public void setResourceList(Long adminId, List<UmsResource> resourceList) {
-        // 简化版不再使用资源缓存
     }
 }

@@ -5,8 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 会员管理Service
- * Created by macro on 2018/8/3.
+ * 会员管理Service（简化版）
  */
 public interface UmsMemberService {
     /**
@@ -40,12 +39,6 @@ public interface UmsMemberService {
      * 获取当前登录会员
      */
     UmsMember getCurrentMember();
-
-    /**
-     * 根据会员id修改会员积分
-     */
-    void updateIntegration(Long id,Integer integration);
-
 
     /**
      * 获取用户信息

@@ -36,7 +36,6 @@
         <docker.maven.plugin.version>0.45.1</docker.maven.plugin.version>
         <pagehelper-starter.version>2.1.1</pagehelper-starter.version>
         <pagehelper.version>6.1.1</pagehelper.version>
-        <druid.version>1.2.24</druid.version>
         <hutool.version>5.8.40</hutool.version>
         <springdoc-openapi.version>2.8.17</springdoc-openapi.version>
         <mybatis-generator.version>1.4.2</mybatis-generator.version>
@@ -45,7 +44,6 @@
         <mysql-connector.version>9.3.0</mysql-connector.version>
         <spring-data-commons.version>3.5.11</spring-data-commons.version>
         <aliyun-oss.version>3.18.5</aliyun-oss.version>
-        <alipay-sdk.version>4.40.630.ALL</alipay-sdk.version>
         <logstash-logback.version>8.0</logstash-logback.version>
         <minio.version>8.6.0</minio.version>
         <okhttp3.version>5.1.0</okhttp3.version>
