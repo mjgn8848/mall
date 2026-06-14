@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * 前台商品详情（简化版）
+ * 前台商品详情（简化版 - 去掉阶梯价/满减价）
  */
 @Getter
 @Setter
@@ -21,10 +21,6 @@ public class PmsPortalProductDetail {
     private List<PmsProductAttributeValue> productAttributeValueList;
     @Schema(title = "商品的sku库存信息")
     private List<PmsSkuStock> skuStockList;
-    @Schema(title = "商品阶梯价格设置")
-    private List<PmsProductLadder> productLadderList;
-    @Schema(title = "商品满减价格设置")
-    private List<PmsProductFullReduction> productFullReductionList;
     @Schema(title = "商品可用优惠券")
     private List<SmsCoupon> couponList;
 }

@@ -1,9 +1,10 @@
 package com.macro.mall.portal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
-import com.macro.mall.portal.dao.HomeDao;
 import com.macro.mall.portal.domain.HomeContentResult;
 import com.macro.mall.portal.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,37 +13,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 首页内容管理Service实现类（简化版）
+ * 首页内容管理Service实现类（简化版 - 直接从主表查询推荐状态）
  */
 @Service
 public class HomeServiceImpl implements HomeService {
     @Autowired
     private SmsHomeAdvertiseMapper advertiseMapper;
     @Autowired
-    private HomeDao homeDao;
-    @Autowired
     private PmsProductMapper productMapper;
     @Autowired
     private PmsProductCategoryMapper productCategoryMapper;
+    @Autowired
+    private PmsBrandMapper brandMapper;
 
     @Override
     public HomeContentResult content() {
         HomeContentResult result = new HomeContentResult();
-        //获取首页广告
         result.setAdvertiseList(getHomeAdvertiseList());
-        //获取推荐品牌
-        result.setBrandList(homeDao.getRecommendBrandList(0, 6));
-        //获取新品推荐
-        result.setNewProductList(homeDao.getNewProductList(0, 4));
-        //获取人气推荐
-        result.setHotProductList(homeDao.getHotProductList(0, 4));
+        result.setBrandList(getRecommendBrandList());
+        result.setNewProductList(getNewProductList());
+        result.setHotProductList(getHotProductList());
         return result;
     }
 
     @Override
     public List<PmsProduct> recommendProductList(Integer pageSize, Integer pageNum) {
-        com.baomidou.mybatisplus.extension.plugins.pagination.Page<PmsProduct> page =
-                new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNum, pageSize);
+        Page<PmsProduct> page = new Page<>(pageNum, pageSize);
         QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
         wrapper.eq("delete_status", 0).eq("publish_status", 1);
         return productMapper.selectPage(page, wrapper).getRecords();
@@ -51,29 +47,24 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<PmsProductCategory> getProductCateList(Long parentId) {
         PmsProductCategoryExample example = new PmsProductCategoryExample();
-        example.createCriteria()
-                .andShowStatusEqualTo(1)
-                .andParentIdEqualTo(parentId);
+        example.createCriteria().andShowStatusEqualTo(1).andParentIdEqualTo(parentId);
         example.setOrderByClause("sort desc");
         return productCategoryMapper.selectByExample(example);
     }
 
     @Override
     public List<CmsSubject> getSubjectList(Long cateId, Integer pageSize, Integer pageNum) {
-        int offset = pageSize * (pageNum - 1);
-        return homeDao.getRecommendSubjectList(offset, pageSize);
+        return null;
     }
 
     @Override
     public List<PmsProduct> hotProductList(Integer pageNum, Integer pageSize) {
-        int offset = pageSize * (pageNum - 1);
-        return homeDao.getHotProductList(offset, pageSize);
+        return getHotProductList();
     }
 
     @Override
     public List<PmsProduct> newProductList(Integer pageNum, Integer pageSize) {
-        int offset = pageSize * (pageNum - 1);
-        return homeDao.getNewProductList(offset, pageSize);
+        return getNewProductList();
     }
 
     private List<SmsHomeAdvertise> getHomeAdvertiseList() {
@@ -81,5 +72,34 @@ public class HomeServiceImpl implements HomeService {
         example.createCriteria().andTypeEqualTo(1).andStatusEqualTo(1);
         example.setOrderByClause("sort desc");
         return advertiseMapper.selectByExample(example);
+    }
+
+    /**
+     * 获取推荐品牌：直接查品牌表 show_status=1 的前6条
+     */
+    private List<PmsBrand> getRecommendBrandList() {
+        QueryWrapper<PmsBrand> wrapper = new QueryWrapper<>();
+        wrapper.eq("show_status", 1).orderByDesc("sort").last("LIMIT 6");
+        return brandMapper.selectList(wrapper);
+    }
+
+    /**
+     * 获取新品推荐：直接查商品表 new_status=1、publish_status=1 的前4条
+     */
+    private List<PmsProduct> getNewProductList() {
+        QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
+        wrapper.eq("new_status", 1).eq("publish_status", 1).eq("delete_status", 0)
+               .orderByDesc("id").last("LIMIT 4");
+        return productMapper.selectList(wrapper);
+    }
+
+    /**
+     * 获取人气推荐：直接查商品表 recommand_status=1、publish_status=1 的前4条
+     */
+    private List<PmsProduct> getHotProductList() {
+        QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
+        wrapper.eq("recommand_status", 1).eq("publish_status", 1).eq("delete_status", 0)
+               .orderByDesc("sale").last("LIMIT 4");
+        return productMapper.selectList(wrapper);
     }
 }

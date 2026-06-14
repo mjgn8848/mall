@@ -8,7 +8,6 @@ import com.macro.mall.mapper.PmsBrandMapper;
 import com.macro.mall.mapper.PmsProductMapper;
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.model.PmsProduct;
-import com.macro.mall.portal.dao.HomeDao;
 import com.macro.mall.portal.service.PmsPortalBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 前台品牌管理Service实现类
+ * 前台品牌管理Service实现类（简化版）
  */
 @Service
 public class PmsPortalBrandServiceImpl implements PmsPortalBrandService {
-    @Autowired
-    private HomeDao homeDao;
     @Autowired
     private PmsBrandMapper brandMapper;
     @Autowired
@@ -29,8 +26,10 @@ public class PmsPortalBrandServiceImpl implements PmsPortalBrandService {
 
     @Override
     public List<PmsBrand> recommendList(Integer pageNum, Integer pageSize) {
-        int offset = (pageNum - 1) * pageSize;
-        return homeDao.getRecommendBrandList(offset, pageSize);
+        QueryWrapper<PmsBrand> wrapper = new QueryWrapper<>();
+        wrapper.eq("show_status", 1).orderByDesc("sort");
+        Page<PmsBrand> page = new Page<>(pageNum, pageSize);
+        return brandMapper.selectPage(page, wrapper).getRecords();
     }
 
     @Override

@@ -12,10 +12,6 @@
         <id column="id" jdbcType="BIGINT" property="id" />
         <collection property="skuStockList" columnPrefix="sku_" resultMap="com.macro.mall.mapper.PmsSkuStockMapper.BaseResultMap">
         </collection>
-        <collection property="productLadderList" columnPrefix="ladder_" resultMap="com.macro.mall.mapper.PmsProductLadderMapper.BaseResultMap">
-        </collection>
-        <collection property="productFullReductionList" columnPrefix="full_" resultMap="com.macro.mall.mapper.PmsProductFullReductionMapper.BaseResultMap">
-        </collection>
     </resultMap>
     <select id="getCartProduct" resultMap="cartProductMap">
         SELECT
@@ -54,18 +50,10 @@
             sku.sku_code sku_sku_code,
             sku.promotion_price sku_promotion_price,
             sku.stock sku_stock,
-            sku.lock_stock sku_lock_stock,
-            ladder.id ladder_id,
-            ladder.count ladder_count,
-            ladder.discount ladder_discount,
-            full_re.id full_id,
-            full_re.full_price full_full_price,
-            full_re.reduce_price full_reduce_price
+            sku.lock_stock sku_lock_stock
         FROM
             pms_product p
             LEFT JOIN pms_sku_stock sku ON p.id = sku.product_id
-            LEFT JOIN pms_product_ladder ladder ON p.id = ladder.product_id
-            LEFT JOIN pms_product_full_reduction full_re ON p.id = full_re.product_id
         WHERE
             p.id IN
         <foreach collection="ids" open="(" close=")" item="id" separator=",">

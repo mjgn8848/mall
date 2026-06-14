@@ -1,6 +1,5 @@
 package com.macro.mall.portal.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 前台订单管理Service实现类（简化版）
+ * 前台商品管理Service实现类（简化版）
  */
 @Service
 public class PmsPortalProductServiceImpl implements PmsPortalProductService {
@@ -33,10 +32,6 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
     private PmsProductAttributeValueMapper productAttributeValueMapper;
     @Autowired
     private PmsSkuStockMapper skuStockMapper;
-    @Autowired
-    private PmsProductLadderMapper productLadderMapper;
-    @Autowired
-    private PmsProductFullReductionMapper productFullReductionMapper;
     @Autowired
     private PortalProductDao portalProductDao;
 
@@ -92,18 +87,6 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         skuExample.createCriteria().andProductIdEqualTo(product.getId());
         List<PmsSkuStock> skuStockList = skuStockMapper.selectByExample(skuExample);
         result.setSkuStockList(skuStockList);
-        if (product.getPromotionType() == 3) {
-            PmsProductLadderExample ladderExample = new PmsProductLadderExample();
-            ladderExample.createCriteria().andProductIdEqualTo(product.getId());
-            List<PmsProductLadder> productLadderList = productLadderMapper.selectByExample(ladderExample);
-            result.setProductLadderList(productLadderList);
-        }
-        if (product.getPromotionType() == 4) {
-            PmsProductFullReductionExample fullReductionExample = new PmsProductFullReductionExample();
-            fullReductionExample.createCriteria().andProductIdEqualTo(product.getId());
-            List<PmsProductFullReduction> productFullReductionList = productFullReductionMapper.selectByExample(fullReductionExample);
-            result.setProductFullReductionList(productFullReductionList);
-        }
         result.setCouponList(portalProductDao.getAvailableCouponList(product.getId(), product.getProductCategoryId()));
         return result;
     }
