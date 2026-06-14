@@ -7,10 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.dao.PmsProductAttributeDao;
 import com.macro.mall.dto.PmsProductAttributeParam;
 import com.macro.mall.dto.ProductAttrInfo;
-import com.macro.mall.mapper.PmsProductAttributeCategoryMapper;
 import com.macro.mall.mapper.PmsProductAttributeMapper;
 import com.macro.mall.model.PmsProductAttribute;
-import com.macro.mall.model.PmsProductAttributeCategory;
 import com.macro.mall.service.PmsProductAttributeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +17,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 商品属性管理Service实现类（MyBatis-Plus）
+ * 商品属性管理Service实现类（MyBatis-Plus 简化版）
  */
 @Service
 public class PmsProductAttributeServiceImpl extends ServiceImpl<PmsProductAttributeMapper, PmsProductAttribute> implements PmsProductAttributeService {
     @Autowired
-    private PmsProductAttributeCategoryMapper productAttributeCategoryMapper;
-    @Autowired
     private PmsProductAttributeDao productAttributeDao;
 
     @Override
-    public IPage<PmsProductAttribute> getList(Long cid, Integer type, Integer pageSize, Integer pageNum) {
+    public IPage<PmsProductAttribute> getList(Integer type, Integer pageSize, Integer pageNum) {
         Page<PmsProductAttribute> page = new Page<>(pageNum, pageSize);
         QueryWrapper<PmsProductAttribute> wrapper = new QueryWrapper<>();
-        wrapper.eq("product_attribute_category_id", cid).eq("type", type).orderByDesc("sort");
+        wrapper.eq("type", type).orderByDesc("sort");
         return this.page(page, wrapper);
     }
 
@@ -40,16 +36,7 @@ public class PmsProductAttributeServiceImpl extends ServiceImpl<PmsProductAttrib
     public int create(PmsProductAttributeParam pmsProductAttributeParam) {
         PmsProductAttribute pmsProductAttribute = new PmsProductAttribute();
         BeanUtils.copyProperties(pmsProductAttributeParam, pmsProductAttribute);
-        int count = this.baseMapper.insert(pmsProductAttribute);
-        // 新增商品属性以后需要更新商品属性分类数量
-        PmsProductAttributeCategory pmsProductAttributeCategory = productAttributeCategoryMapper.selectById(pmsProductAttribute.getProductAttributeCategoryId());
-        if (pmsProductAttribute.getType() == 0) {
-            pmsProductAttributeCategory.setAttributeCount(pmsProductAttributeCategory.getAttributeCount() + 1);
-        } else if (pmsProductAttribute.getType() == 1) {
-            pmsProductAttributeCategory.setParamCount(pmsProductAttributeCategory.getParamCount() + 1);
-        }
-        productAttributeCategoryMapper.updateById(pmsProductAttributeCategory);
-        return count;
+        return this.baseMapper.insert(pmsProductAttribute);
     }
 
     @Override
@@ -67,27 +54,7 @@ public class PmsProductAttributeServiceImpl extends ServiceImpl<PmsProductAttrib
 
     @Override
     public int delete(List<Long> ids) {
-        // 获取分类
-        PmsProductAttribute pmsProductAttribute = this.baseMapper.selectById(ids.get(0));
-        Integer type = pmsProductAttribute.getType();
-        PmsProductAttributeCategory pmsProductAttributeCategory = productAttributeCategoryMapper.selectById(pmsProductAttribute.getProductAttributeCategoryId());
-        int count = this.baseMapper.deleteBatchIds(ids);
-        // 删除完成后修改数量
-        if (type == 0) {
-            if (pmsProductAttributeCategory.getAttributeCount() >= count) {
-                pmsProductAttributeCategory.setAttributeCount(pmsProductAttributeCategory.getAttributeCount() - count);
-            } else {
-                pmsProductAttributeCategory.setAttributeCount(0);
-            }
-        } else if (type == 1) {
-            if (pmsProductAttributeCategory.getParamCount() >= count) {
-                pmsProductAttributeCategory.setParamCount(pmsProductAttributeCategory.getParamCount() - count);
-            } else {
-                pmsProductAttributeCategory.setParamCount(0);
-            }
-        }
-        productAttributeCategoryMapper.updateById(pmsProductAttributeCategory);
-        return count;
+        return this.baseMapper.deleteBatchIds(ids);
     }
 
     @Override

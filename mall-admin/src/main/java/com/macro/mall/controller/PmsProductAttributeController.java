@@ -10,7 +10,6 @@ import com.macro.mall.service.PmsProductAttributeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.util.List;
 
 /**
  * 商品属性管理Controller
- * Created by macro on 2018/4/26.
  */
 @Controller
 @Tag(name = "PmsProductAttributeController", description = "商品属性管理")
@@ -31,14 +29,13 @@ public class PmsProductAttributeController {
     private PmsProductAttributeService productAttributeService;
 
     @Operation(summary = "根据分类查询属性列表或参数列表")
-    @Parameters({@Parameter(name = "type", description = "0表示属性，1表示参数", required = true,in = ParameterIn.QUERY, schema = @Schema(type = "integer"))})
-    @RequestMapping(value = "/list/{cid}", method = RequestMethod.GET)
+    @Parameters({@Parameter(name = "type", description = "0表示属性，1表示参数", required = true, schema = @Schema(type = "integer"))})
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<CommonPage<PmsProductAttribute>> getList(@PathVariable Long cid,
-                                                                 @RequestParam(value = "type") Integer type,
+    public CommonResult<CommonPage<PmsProductAttribute>> getList(@RequestParam(value = "type") Integer type,
                                                                  @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                                  @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        IPage<PmsProductAttribute> productAttributeList = productAttributeService.getList(cid, type, pageSize, pageNum);
+        IPage<PmsProductAttribute> productAttributeList = productAttributeService.getList(type, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(productAttributeList));
     }
 
@@ -86,7 +83,7 @@ public class PmsProductAttributeController {
         }
     }
 
-    @Operation(summary = "根据商品分类的id获取商品属性及属性分类")
+    @Operation(summary = "根据商品分类的id获取商品属性")
     @RequestMapping(value = "/attrInfo/{productCategoryId}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<List<ProductAttrInfo>> getAttrInfo(@PathVariable Long productCategoryId) {

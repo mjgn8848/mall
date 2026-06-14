@@ -24,7 +24,6 @@
             p.sub_title subTitle,
             p.price price,
             p.pic pic,
-            p.product_attribute_category_id productAttributeCategoryId,
             p.stock stock,
             pa.id attr_id,
             pa.`name` attr_name,
@@ -35,8 +34,9 @@
             ps.pic sku_pic
         FROM
             pms_product p
-            LEFT JOIN pms_product_attribute pa ON p.product_attribute_category_id = pa.product_attribute_category_id
-            LEFT JOIN pms_sku_stock ps ON p.id=ps.product_id
+            LEFT JOIN pms_product_attribute_value pav ON p.id = pav.product_id
+            LEFT JOIN pms_product_attribute pa ON pav.product_attribute_id = pa.id
+            LEFT JOIN pms_sku_stock ps ON p.id = ps.product_id
         WHERE
             p.id = #{id}
             AND pa.type = 0

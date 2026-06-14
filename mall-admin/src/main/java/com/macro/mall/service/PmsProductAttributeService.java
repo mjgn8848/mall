@@ -10,15 +10,13 @@ import java.util.List;
 
 /**
  * 商品属性管理Service
- * Created by macro on 2018/4/26.
  */
 public interface PmsProductAttributeService {
     /**
-     * 根据分类ID和类型分页获取商品属性
-     * @param cid 分类id
+     * 根据类型分页获取商品属性
      * @param type 0->规格；1->参数
      */
-    IPage<PmsProductAttribute> getList(Long cid, Integer type, Integer pageSize, Integer pageNum);
+    IPage<PmsProductAttribute> getList(Integer type, Integer pageSize, Integer pageNum);
 
     /**
      * 添加商品属性
