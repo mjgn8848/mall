@@ -15,4 +15,6 @@ import java.util.List;
 public class PmsProductParam extends PmsProduct{
     @Schema(title = "商品的sku库存信息")
     private List<PmsSkuStock> skuStockList;
+    @Schema(title = "商品参数及自定义规格属性")
+    private List<PmsProductAttributeValue> productAttributeValueList;
 }
