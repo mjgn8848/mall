@@ -27,8 +27,6 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
     @Autowired
     private PmsProductCategoryMapper productCategoryMapper;
     @Autowired
-    private PmsBrandMapper brandMapper;
-    @Autowired
     private PmsProductAttributeValueMapper productAttributeValueMapper;
     @Autowired
     private PmsSkuStockMapper skuStockMapper;
@@ -36,15 +34,12 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
     private PortalProductDao portalProductDao;
 
     @Override
-    public IPage<PmsProduct> search(String keyword, Long brandId, Long productCategoryId, Integer pageNum, Integer pageSize, Integer sort) {
+    public IPage<PmsProduct> search(String keyword, Long productCategoryId, Integer pageNum, Integer pageSize, Integer sort) {
         Page<PmsProduct> page = new Page<>(pageNum, pageSize);
         QueryWrapper<PmsProduct> wrapper = new QueryWrapper<>();
         wrapper.eq("delete_status", 0).eq("publish_status", 1);
         if (StrUtil.isNotEmpty(keyword)) {
             wrapper.like("name", keyword);
-        }
-        if (brandId != null) {
-            wrapper.eq("brand_id", brandId);
         }
         if (productCategoryId != null) {
             wrapper.eq("product_category_id", productCategoryId);
@@ -77,8 +72,6 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         PmsPortalProductDetail result = new PmsPortalProductDetail();
         PmsProduct product = productMapper.selectByPrimaryKey(id);
         result.setProduct(product);
-        PmsBrand brand = brandMapper.selectByPrimaryKey(product.getBrandId());
-        result.setBrand(brand);
         PmsProductAttributeValueExample attributeValueExample = new PmsProductAttributeValueExample();
         attributeValueExample.createCriteria().andProductIdEqualTo(product.getId());
         List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectByExample(attributeValueExample);

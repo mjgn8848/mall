@@ -23,14 +23,11 @@ public class HomeServiceImpl implements HomeService {
     private PmsProductMapper productMapper;
     @Autowired
     private PmsProductCategoryMapper productCategoryMapper;
-    @Autowired
-    private PmsBrandMapper brandMapper;
 
     @Override
     public HomeContentResult content() {
         HomeContentResult result = new HomeContentResult();
         result.setAdvertiseList(getHomeAdvertiseList());
-        result.setBrandList(getRecommendBrandList());
         result.setNewProductList(getNewProductList());
         result.setHotProductList(getHotProductList());
         return result;
@@ -72,15 +69,6 @@ public class HomeServiceImpl implements HomeService {
         example.createCriteria().andTypeEqualTo(1).andStatusEqualTo(1);
         example.setOrderByClause("sort desc");
         return advertiseMapper.selectByExample(example);
-    }
-
-    /**
-     * 获取推荐品牌：直接查品牌表 show_status=1 的前6条
-     */
-    private List<PmsBrand> getRecommendBrandList() {
-        QueryWrapper<PmsBrand> wrapper = new QueryWrapper<>();
-        wrapper.eq("show_status", 1).orderByDesc("sort").last("LIMIT 6");
-        return brandMapper.selectList(wrapper);
     }
 
     /**

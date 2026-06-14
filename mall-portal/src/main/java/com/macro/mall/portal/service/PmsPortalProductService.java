@@ -14,7 +14,7 @@ public interface PmsPortalProductService {
     /**
      * 综合搜索商品
      */
-    IPage<PmsProduct> search(String keyword, Long brandId, Long productCategoryId, Integer pageNum, Integer pageSize, Integer sort);
+    IPage<PmsProduct> search(String keyword, Long productCategoryId, Integer pageNum, Integer pageSize, Integer sort);
 
     /**
      * 以树形结构获取所有商品分类
